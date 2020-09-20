@@ -1,3 +1,8 @@
+//------------------------------------------
+//  Name: Macie Ryan
+//Course: COP 3003
+//  File: Controller.java
+//------------------------------------------
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -36,6 +41,9 @@ public class Controller {
 
   @FXML
   private Tab produceTab;
+
+  @FXML
+  private ComboBox<?> cmbQuantity;
 
   @FXML
   private Button btnRecordProduction;

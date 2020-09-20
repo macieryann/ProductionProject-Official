@@ -1,3 +1,8 @@
+//------------------------------------------
+//  Name: Macie Ryan
+//Course: COP 3003
+//  File: Main.java
+//------------------------------------------
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
