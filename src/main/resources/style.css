@@ -1,12 +1,12 @@
 .root {
-    -fx-font-size: 16px;
-    -fx-font-family: arial;
+  -fx-font-size: 16px;
+  -fx-font-family: arial;
 }
 
-#pane{
-    -fx-background-color: blue;
+#pane {
+  -fx-background-color: blue;
 }
 
-#tabPane{
-    -fx-background-color: #E9CBED;
+#tabPane {
+  -fx-background-color: #E9CBED;
 }
