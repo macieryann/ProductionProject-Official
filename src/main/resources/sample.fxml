@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   Name: Macie Ryan
 Course: COP 3003
@@ -51,7 +52,7 @@ Course: COP 3003
                   <TextField fx:id="txtManufacturer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Manufacturer" GridPane.rowIndex="1" />
                   <Label text="Item Type" GridPane.rowIndex="2" />
-                  <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ChoiceBox fx:id="chbItemType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 </children>
               </GridPane>
               <Button fx:id="btnAddProduct" layoutX="101.0" layoutY="115.0" mnemonicParsing="false" onAction="#addProduct" text="Add Product" />

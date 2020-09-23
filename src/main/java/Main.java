@@ -20,7 +20,7 @@ public class Main extends Application {
     String css = this.getClass().getResource("style.css").toExternalForm();
     scene.getStylesheets().add(css);
 
-    primaryStage.setTitle("Activity");
+    primaryStage.setTitle("HR Production Project");
     primaryStage.setScene(scene);
     primaryStage.show();
   }

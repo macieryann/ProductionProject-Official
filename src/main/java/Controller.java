@@ -37,13 +37,16 @@ public class Controller {
   private TextField txtManufacturer;
 
   @FXML
+  private ChoiceBox<String> chbItemType;
+
+  @FXML
   private Button btnAddProduct;
 
   @FXML
   private Tab produceTab;
 
   @FXML
-  private ComboBox<?> cmbQuantity;
+  private ComboBox<String> cmbQuantity;
 
   @FXML
   private Button btnRecordProduction;
@@ -51,20 +54,12 @@ public class Controller {
   @FXML
   private Tab productionLogTab;
 
-  @FXML
-  void addProduct(ActionEvent event) throws SQLException {
-    final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:./resources/BicycleDB";
+  public void addProduct(javafx.event.ActionEvent actionEvent){
+    connectToDb();
+  }
 
-    Connection conn = null;
-    Statement stmt = null;
-
-    System.out.println("Inserting records into the table...");
-    stmt = conn.createStatement();
-
-    String sql = "INSERT INTO Product(type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' )";
-    stmt.executeUpdate(sql);
-
+  public void recordProductionDisplay(javafx.event.ActionEvent actionEvent){
+    System.out.println("Production displayed");
   }
 
   @FXML
@@ -72,13 +67,22 @@ public class Controller {
     System.out.println("Product Added.");
   }
 
-  @FXML
-  private TextArea taOutput;
+  public void initialize(){
+    //connectToDb();
+    cmbQuantity.setEditable(true);
+    for(int i = 1; i <= 10; i++){
+      cmbQuantity.getItems().add(String.valueOf(i));
+    }
+    cmbQuantity.getSelectionModel().selectFirst();
+    chbItemType.getSelectionModel().selectFirst();
+    chbItemType.getItems().add(String.valueOf("AUDIO"));
+    chbItemType.getItems().add(String.valueOf("AUDIO_MOBILE"));
+    chbItemType.getItems().add(String.valueOf("VISUAL"));
+  }
 
-  public void initialize() {
-
+  public void connectToDb(){
     final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:./resources/BicycleDB";
+    final String DB_URL = "jdbc:h2:./res/HR";
 
     //  Database credentials
     final String USER = "";
@@ -89,29 +93,38 @@ public class Controller {
     try {
       // STEP 1: Register JDBC driver
       Class.forName(JDBC_DRIVER);
-      //Class.forName(new org.h2.Driver());
 
       //STEP 2: Open a connection
-      //conn = DriverManager.getConnection(DB_URL, USER, PASS);
-      conn = DriverManager.getConnection(DB_URL);
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
       //STEP 3: Execute a query
       stmt = conn.createStatement();
+      String productNameData = txtProductName.getText();
+      String manufacturerNameData = txtManufacturer.getText();
+      String productType = chbItemType.getValue();
+      String insertSql = "INSERT INTO PRODUCT (NAME, TYPE, MANUFACTURER)" + "VALUES ("
+          + productNameData + "','" + productType + "','" + manufacturerNameData +
+          "')";
+      stmt.executeUpdate(insertSql);
 
-      String sql = "SELECT * FROM Bike";
+      String sql = "SELECT * FROM JOBS";
 
       ResultSet rs = stmt.executeQuery(sql);
       while (rs.next()) {
-        taOutput.appendText(rs.getString(1) + "\n");
+        System.out.println("Product ID: " + rs.getString(1));
+        System.out.println("Product Name: " + rs.getString(2));
+        System.out.println("Product Type: " + rs.getString(3));
+        System.out.println("Product Manufacturer: " + rs.getString(4));
       }
 
       // STEP 4: Clean-up environment
       stmt.close();
       conn.close();
-    } catch (SQLException e) {
-      taOutput.appendText(e.toString());
     } catch (ClassNotFoundException e) {
-      taOutput.appendText(e.toString());
+      e.printStackTrace();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
 }
