@@ -102,12 +102,12 @@ public class Controller {
       String productNameData = txtProductName.getText();
       String manufacturerNameData = txtManufacturer.getText();
       String productType = chbItemType.getValue();
-      String insertSql = "INSERT INTO PRODUCT (NAME, TYPE, MANUFACTURER)" + "VALUES ("
-          + productNameData + "','" + productType + "','" + manufacturerNameData +
-          "')";
+      String insertSql = "INSERT INTO PRODUCT (NAME, TYPE, MANUFACTURER)" + "VALUES ('"
+          + productNameData + "','" + productType + "','" + manufacturerNameData + "')";
       stmt.executeUpdate(insertSql);
+      System.out.println(insertSql);
 
-      String sql = "SELECT * FROM JOBS";
+      String sql = "SELECT * FROM PRODUCT";
 
       ResultSet rs = stmt.executeQuery(sql);
       while (rs.next()) {

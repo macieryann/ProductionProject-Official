@@ -23,5 +23,6 @@ public class Main extends Application {
     primaryStage.setTitle("HR Production Project");
     primaryStage.setScene(scene);
     primaryStage.show();
+
   }
 }
