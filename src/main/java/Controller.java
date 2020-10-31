@@ -3,11 +3,13 @@
 //Course: COP 3003
 //  File: Controller.java
 //------------------------------------------
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -43,6 +45,18 @@ public class Controller {
   private Button btnAddProduct;
 
   @FXML
+  private TableView<Product> tblViewProducts;
+
+  @FXML
+  private TableColumn<?, ?> colName;
+
+  @FXML
+  private TableColumn<?, ?> colManufacturer;
+
+  @FXML
+  private TableColumn<?, ?> colType;
+
+  @FXML
   private Tab produceTab;
 
   @FXML
@@ -52,19 +66,35 @@ public class Controller {
   private Button btnRecordProduction;
 
   @FXML
+  private TextArea txtAreaProdLog;
+
+  void btnRecordProduction(ActionEvent event){
+    recordProduction();
+  }
+
+  @FXML
   private Tab productionLogTab;
+
+  ObservableList<Product> productLine = FXCollections.observableArrayList(new Widget(txtProductName.getText(),
+      txtManufacturer.getText(), chbItemType.getValue()));
 
   public void addProduct(javafx.event.ActionEvent actionEvent){
     connectToDb();
   }
 
-  public void recordProductionDisplay(javafx.event.ActionEvent actionEvent){
-    System.out.println("Production displayed");
+  // Update table on Product Line Tab
+  public void setUpProductLineTab(){
+    colName.setCellValueFactory(new PropertyValueFactory("name"));
+    colName.setCellValueFactory(new PropertyValueFactory("manufacturer"));
+    colName.setCellValueFactory(new PropertyValueFactory("type"));
+    tblViewProducts.setItems(productLine);
   }
 
-  @FXML
-  void recordProduction(ActionEvent event) {
-    System.out.println("Product Added.");
+  void recordProduction() {
+    // add text from ProductionRecord to product log text area
+    Product Product = new Product(txtProductName.getText(), txtManufacturer.getText(), ItemType.AUDIO){};
+    ProductionRecord pr = new ProductionRecord(Product, Product.getId());
+    txtAreaProdLog.appendText(String.valueOf(pr));
   }
 
   public void initialize(){

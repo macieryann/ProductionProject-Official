@@ -16,6 +16,10 @@ public class Product implements Item{
     return "Name: " + getName() + "\nManufacturer: " + getManufacturer() + "\nType: " + type.code;
   }
 
+  public ItemType getType(){
+    return type;
+  }
+
   public int getId(){
     return id;
   }
