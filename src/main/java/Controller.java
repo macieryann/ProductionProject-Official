@@ -16,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
+
 public class Controller {
 
   @FXML
@@ -75,7 +77,7 @@ public class Controller {
   @FXML
   private Tab productionLogTab;
 
-  ObservableList<Product> productLine = FXCollections.observableArrayList(new Widget(txtProductName.getText(),
+  ObservableList<Product> productLine = FXCollections.observableArrayList(new Product(txtProductName.getText(),
       txtManufacturer.getText(), chbItemType.getValue()));
 
   public void addProduct(javafx.event.ActionEvent actionEvent){

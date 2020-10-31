@@ -7,6 +7,7 @@ public class ProductionRecord {
   Date dateProduced;
   int num;
   String serial;
+  String format = "0000";
 
   public ProductionRecord(int productID){
     this.productID = productID;
@@ -30,7 +31,7 @@ public class ProductionRecord {
 
   public String createSerialNumber(Product product, int productionAmt){
     String serialNumber;
-    serialNumber = product.getManufacturer().substring(0,2) + product.getType().code;
+    serialNumber = String.format("%f", product.getManufacturer().substring(0,2) + product.getType().code);
     return serialNumber;
   }
 
