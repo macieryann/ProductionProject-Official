@@ -1,3 +1,8 @@
+//------------------------------------------
+//  Name: Macie Ryan
+//Course: COP 3003
+//  File: MonitorType.java
+//------------------------------------------
 public enum MonitorType {
   LCD("LCD"),
   LED("LED");

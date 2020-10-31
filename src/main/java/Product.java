@@ -1,3 +1,8 @@
+//------------------------------------------
+//  Name: Macie Ryan
+//Course: COP 3003
+//  File: Product.java
+//------------------------------------------
 public class Product implements Item{
 
   int id;

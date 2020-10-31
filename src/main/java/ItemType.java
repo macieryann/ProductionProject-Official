@@ -1,3 +1,8 @@
+//------------------------------------------
+//  Name: Macie Ryan
+//Course: COP 3003
+//  File: ItemType.java
+//------------------------------------------
 public enum ItemType {
   AUDIO ("AU"),
   VISUAL ("VI"),

@@ -3,6 +3,7 @@
 //Course: COP 3003
 //  File: Controller.java
 //------------------------------------------
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -78,9 +79,6 @@ public class Controller {
   @FXML
   private Tab productionLogTab;
 
-  ObservableList<Product> productLine = FXCollections.observableArrayList(new Product(txtProductName.getText(),
-      txtManufacturer.getText(), chbItemType.getValue()));
-
   public void addProduct(javafx.event.ActionEvent actionEvent){
     connectToDb();
   }
@@ -101,6 +99,7 @@ public class Controller {
   }
 
   public void initialize(){
+    testMultimedia();
     cmbQuantity.setEditable(true);
     for(int i = 1; i <= 10; i++){
       cmbQuantity.getItems().add(String.valueOf(i));
@@ -108,13 +107,10 @@ public class Controller {
     cmbQuantity.getSelectionModel().selectFirst();
 
     for(ItemType itemType : ItemType.values()){
-      chbItemType.getItems().add(ItemType.valueOf(String.valueOf(itemType)));
+      chbItemType.getItems().add(itemType);
     }
 
     chbItemType.getSelectionModel().selectFirst();
-    //chbItemType.getItems().add(String.valueOf("AUDIO"));
-    //chbItemType.getItems().add(String.valueOf("AUDIO_MOBILE"));
-    //chbItemType.getItems().add(String.valueOf("VISUAL"));
   }
 
   public void connectToDb(){
@@ -162,6 +158,33 @@ public class Controller {
 
     } catch (SQLException e) {
       e.printStackTrace();
+    }
+  }
+  
+  ObservableList<Product> productLine = FXCollections.observableArrayList(new Product(txtProductName.getText(),
+      txtManufacturer.getText(), chbItemType.getValue()));
+
+
+  public static void testMultimedia() {
+
+    AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A", "Onkyo",
+        "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
+    Screen newScreen = new Screen("720x480", 40, 22);
+    MoviePlayer newMovieProduct = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen,
+        MonitorType.LCD);
+    ArrayList<MultimediaControl> productList = new ArrayList<MultimediaControl>();
+
+    productList.add(newAudioProduct);
+
+    productList.add(newMovieProduct);
+
+    for (MultimediaControl i : productList) {
+      System.out.println(i);
+
+      i.play();
+      i.stop();
+      i.next();
+      i.previous();
     }
   }
 }

@@ -1,3 +1,8 @@
+//------------------------------------------
+//  Name: Macie Ryan
+//Course: COP 3003
+//  File: Item.java
+//------------------------------------------
 public interface Item {
   public int getId();
 

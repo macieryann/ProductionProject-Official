@@ -1,3 +1,8 @@
+//------------------------------------------
+//  Name: Macie Ryan
+//Course: COP 3003
+//  File: MoviePlayer.java
+//------------------------------------------
 public class MoviePlayer extends Product implements MultimediaControl {
 
   Screen screen;

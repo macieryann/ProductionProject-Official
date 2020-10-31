@@ -1,3 +1,8 @@
+//------------------------------------------
+//  Name: Macie Ryan
+//Course: COP 3003
+//  File: ProductionRecord.java
+//------------------------------------------
 import java.util.Date;
 
 public class ProductionRecord {

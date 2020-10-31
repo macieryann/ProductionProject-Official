@@ -3,6 +3,7 @@
 //Course: COP 3003
 //  File: Main.java
 //------------------------------------------
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

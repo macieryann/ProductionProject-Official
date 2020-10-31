@@ -1,3 +1,8 @@
+//------------------------------------------
+//  Name: Macie Ryan
+//Course: COP 3003
+//  File: Screen.java
+//------------------------------------------
 public class Screen implements ScreenSpec{
   String resolution;
   int refreshRate;
