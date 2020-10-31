@@ -1,8 +1,3 @@
-//------------------------------------------
-//  Name: Macie Ryan
-//Course: COP 3003
-//  File: ProductionRecord.java
-//------------------------------------------
 import java.util.Date;
 
 public class ProductionRecord {
@@ -12,7 +7,6 @@ public class ProductionRecord {
   Date dateProduced;
   int num;
   String serial;
-  String format = "0000";
 
   public ProductionRecord(int productID){
     this.productID = productID;
@@ -26,18 +20,18 @@ public class ProductionRecord {
     this.productionNumber = productionNumber;
     this.productID = productID;
     this.serialNumber = serialNumber;
-    this.dateProduced = dateProduced;
+    this.dateProduced = new Date(dateProduced.getTime());
 
   }
 
   public ProductionRecord(Product product, int productionAmt){
-    this.serialNumber = createSerialNumber(product, productionAmt);
+    this.serialNumber = createSerialNumber(product.getManufacturer(), product, productionAmt);
   }
 
-  public String createSerialNumber(Product product, int productionAmt){
-    String serialNumber;
-    serialNumber = String.format("%f", product.getManufacturer().substring(0,2) + product.getType().code);
-    return serialNumber;
+  public static String createSerialNumber(String manufacturer, Product product, int productionAmt){
+    return manufacturer.substring(0,2).toUpperCase()
+        + product.getType()
+        + String.format("%05d", productionAmt);
   }
 
   public void setProductionNum(int num){
@@ -65,11 +59,11 @@ public class ProductionRecord {
   }
 
   public void setProdDate(Date dateProduced){
-    this.dateProduced = dateProduced;
+    this.dateProduced = new Date(dateProduced.getTime());
   }
 
   public Date getProdDate(){
-    return dateProduced;
+    return new Date(dateProduced.getTime());
   }
 
   public String toString(){
