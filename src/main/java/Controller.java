@@ -16,18 +16,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
 public class Controller {
 
   @FXML
   private Label lblOutput;
 
   public TabPane tabPane;
+
   @FXML
   private Pane pane;
+
   @FXML
   private Tab tab;
+
   @FXML
   private Label Produce;
 
@@ -41,7 +42,7 @@ public class Controller {
   private TextField txtManufacturer;
 
   @FXML
-  private ChoiceBox<String> chbItemType;
+  private ChoiceBox<ItemType> chbItemType;
 
   @FXML
   private Button btnAddProduct;
@@ -100,16 +101,20 @@ public class Controller {
   }
 
   public void initialize(){
-    //connectToDb();
     cmbQuantity.setEditable(true);
     for(int i = 1; i <= 10; i++){
       cmbQuantity.getItems().add(String.valueOf(i));
     }
     cmbQuantity.getSelectionModel().selectFirst();
+
+    for(ItemType itemType : ItemType.values()){
+      chbItemType.getItems().add(ItemType.valueOf(String.valueOf(itemType)));
+    }
+
     chbItemType.getSelectionModel().selectFirst();
-    chbItemType.getItems().add(String.valueOf("AUDIO"));
-    chbItemType.getItems().add(String.valueOf("AUDIO_MOBILE"));
-    chbItemType.getItems().add(String.valueOf("VISUAL"));
+    //chbItemType.getItems().add(String.valueOf("AUDIO"));
+    //chbItemType.getItems().add(String.valueOf("AUDIO_MOBILE"));
+    //chbItemType.getItems().add(String.valueOf("VISUAL"));
   }
 
   public void connectToDb(){
@@ -133,7 +138,7 @@ public class Controller {
       stmt = conn.createStatement();
       String productNameData = txtProductName.getText();
       String manufacturerNameData = txtManufacturer.getText();
-      String productType = chbItemType.getValue();
+      ItemType productType = chbItemType.getValue();
       String insertSql = "INSERT INTO PRODUCT (NAME, TYPE, MANUFACTURER)" + "VALUES ('"
           + productNameData + "','" + productType + "','" + manufacturerNameData + "')";
       stmt.executeUpdate(insertSql);
