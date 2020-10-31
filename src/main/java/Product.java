@@ -1,9 +1,9 @@
 public class Product implements Item{
 
-  private int id;
-  private ItemType type;
-  private String manufacturer;
-  private String name;
+  int id;
+  ItemType type;
+  String manufacturer;
+  String name;
 
   public Product(String name, String manufacturer, ItemType type){
     this.id = id;
@@ -20,7 +20,9 @@ public class Product implements Item{
     return id;
   }
 
-  public void setName(String name){}
+  public void setName(String name){
+
+  }
 
   public String getName(){
     return name;
