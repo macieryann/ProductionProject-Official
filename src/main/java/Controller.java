@@ -49,16 +49,19 @@ public class Controller {
   private Button btnAddProduct;
 
   @FXML
-  private TableView<Product> tblViewProducts;
+  private TableView<Widget> tblViewProducts;
 
   @FXML
-  private TableColumn<?, ?> colName;
+  private TableColumn colProductID;
 
   @FXML
-  private TableColumn<?, ?> colManufacturer;
+  private TableColumn colName;
 
   @FXML
-  private TableColumn<?, ?> colType;
+  private TableColumn colManufacturer;
+
+  @FXML
+  private TableColumn colType;
 
   @FXML
   private Tab produceTab;
@@ -72,38 +75,25 @@ public class Controller {
   @FXML
   private TextArea txtAreaProdLog;
 
-  void btnRecordProduction(ActionEvent event){
-    recordProduction();
-  }
-
   @FXML
   private Tab productionLogTab;
 
-  public void addProduct(javafx.event.ActionEvent actionEvent){
-    connectToDb();
+  void btnRecordProduction(ActionEvent event){
+
   }
 
-  // Update table on Product Line Tab
+/*  // Update table on Product Line Tab
   public void setUpProductLineTab(){
     colName.setCellValueFactory(new PropertyValueFactory("name"));
     colName.setCellValueFactory(new PropertyValueFactory("manufacturer"));
     colName.setCellValueFactory(new PropertyValueFactory("type"));
     tblViewProducts.setItems(productLine);
-  }
-
-  void recordProduction() {
-    // add text from ProductionRecord to product log text area
-    Product Product = new Product(txtProductName.getText(), txtManufacturer.getText(), ItemType.AUDIO){};
-    ProductionRecord pr = new ProductionRecord(Product, Product.getId());
-    txtAreaProdLog.appendText(String.valueOf(pr));
-  }
+  }*/
 
   public void initialize(){
     testMultimedia();
     cmbQuantity.setEditable(true);
-    for(int i = 1; i <= 10; i++){
-      cmbQuantity.getItems().add(String.valueOf(i));
-    }
+    for(int i = 1; i <= 10; i++)
     cmbQuantity.getSelectionModel().selectFirst();
 
     for(ItemType itemType : ItemType.values()){
@@ -111,6 +101,15 @@ public class Controller {
     }
 
     chbItemType.getSelectionModel().selectFirst();
+
+    testMultimedia();
+
+    ObservableList<Widget> one = setUpProductLine();
+    colProductID.setCellValueFactory(new PropertyValueFactory("id"));
+    colName.setCellValueFactory(new PropertyValueFactory("Name"));
+    colManufacturer.setCellValueFactory(new PropertyValueFactory("Manufacturer"));
+    colType.setCellValueFactory(new PropertyValueFactory("Type"));
+    tblViewProducts.setItems(one);
   }
 
   public void connectToDb(){
@@ -160,13 +159,29 @@ public class Controller {
       e.printStackTrace();
     }
   }
-  
-  ObservableList<Product> productLine = FXCollections.observableArrayList(new Product(txtProductName.getText(),
-      txtManufacturer.getText(), chbItemType.getValue()));
 
+  public static ObservableList<Widget> setUpProductLine(){
+    return FXCollections.observableArrayList(
+        new Widget("iPhone","Apple",ItemType.VISUAL),
+        new Widget("Airpods","Apple",ItemType.AUDIO),
+        new Widget("Switch","Nintento",ItemType.VISUAL_MOBILE),
+        new Widget("Podcast","Spotify",ItemType.AUDIO_MOBILE));
+
+  }
+
+  void recordProduction(javafx.event.ActionEvent actionEvent) {
+    // add text from ProductionRecord to product log text area
+/*    Product Product = new Product(txtProductName.getText(), txtManufacturer.getText(), ItemType.AUDIO){};
+    ProductionRecord pr = new ProductionRecord(Product, Product.getId());
+    txtAreaProdLog.appendText(String.valueOf(pr));*/
+    System.out.println("Hello");
+  }
+
+  public void addProduct(javafx.event.ActionEvent actionEvent){
+    connectToDb();
+  }
 
   public static void testMultimedia() {
-
     AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A", "Onkyo",
         "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
     Screen newScreen = new Screen("720x480", 40, 22);

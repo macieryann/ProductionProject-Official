@@ -58,9 +58,10 @@ Course: COP 3003
               <Button fx:id="btnAddProduct" layoutX="143.0" layoutY="275.0" mnemonicParsing="false" onAction="#addProduct" text="Add Product" />
               <TableView fx:id="tblViewProducts" layoutX="364.0" layoutY="45.0" prefHeight="288.0" prefWidth="323.0">
                 <columns>
-                  <TableColumn fx:id="colName" prefWidth="75.0" text="C1" />
-                  <TableColumn fx:id="colManufacturer" prefWidth="75.0" text="C2" />
-                           <TableColumn fx:id="colType" prefWidth="75.0" text="C3" />
+                  <TableColumn fx:id="colProductID" prefWidth="75.0" text="Product ID"
+                  <TableColumn fx:id="colName" prefWidth="75.0" text="Product Name" />
+                  <TableColumn fx:id="colManufacturer" prefWidth="75.0" text="Manufacturer" />
+                  <TableColumn fx:id="colType" prefWidth="75.0" text="Item Type" />
                 </columns>
               </TableView>
               <Label layoutX="364.0" layoutY="25.0" text="Existing Products" />
