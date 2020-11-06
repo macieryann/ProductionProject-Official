@@ -78,10 +78,6 @@ public class Controller {
   @FXML
   private Tab productionLogTab;
 
-  void btnRecordProduction(ActionEvent event){
-
-  }
-
 /*  // Update table on Product Line Tab
   public void setUpProductLineTab(){
     colName.setCellValueFactory(new PropertyValueFactory("name"));
@@ -169,7 +165,7 @@ public class Controller {
 
   }
 
-  void recordProduction(javafx.event.ActionEvent actionEvent) {
+  public void recordProduction(javafx.event.ActionEvent actionEvent) {
     // add text from ProductionRecord to product log text area
 /*    Product Product = new Product(txtProductName.getText(), txtManufacturer.getText(), ItemType.AUDIO){};
     ProductionRecord pr = new ProductionRecord(Product, Product.getId());
