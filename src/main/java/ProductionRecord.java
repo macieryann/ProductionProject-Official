@@ -20,18 +20,21 @@ public class ProductionRecord {
     this.productionNumber = productionNumber;
     this.productID = productID;
     this.serialNumber = serialNumber;
-    this.dateProduced = new Date(dateProduced.getTime());
-
+    this.dateProduced = dateProduced;
   }
 
   public ProductionRecord(Product product, int productionAmt){
-    this.serialNumber = createSerialNumber(product.getManufacturer(), product, productionAmt);
+    this.serialNumber = createSerialNumber(product.manufacturer, product, productionAmt);
   }
 
-  public static String createSerialNumber(String manufacturer, Product product, int productionAmt){
-    return manufacturer.substring(0,2).toUpperCase()
+  public String createSerialNumber(String manufacturer, Product product, int productionAmt){
+    String serialNumber;
+    serialNumber = manufacturer.substring(0,3)
         + product.getType()
         + String.format("%05d", productionAmt);
+    setProdDate(new Date());
+    return serialNumber;
+
   }
 
   public void setProductionNum(int num){
@@ -59,11 +62,11 @@ public class ProductionRecord {
   }
 
   public void setProdDate(Date dateProduced){
-    this.dateProduced = new Date(dateProduced.getTime());
+    this.dateProduced = dateProduced;
   }
 
   public Date getProdDate(){
-    return new Date(dateProduced.getTime());
+    return dateProduced;
   }
 
   public String toString(){

@@ -11,18 +11,32 @@ public class Product implements Item{
   String name;
 
   public Product(String name, String manufacturer, ItemType type){
-    this.id = id;
     this.type = type;
     this.manufacturer = manufacturer;
     this.name = name;
+  }
+
+  public Product(int id, String name, String manufacturer, ItemType type){
+    this.id = id;
+    this.name = name;
+    this.manufacturer = manufacturer;
+    this.type = type;
   }
 
   public String toString(){
     return "Name: " + getName() + "\nManufacturer: " + getManufacturer() + "\nType: " + type.code;
   }
 
+  public void setType(ItemType type){
+    this.type = type;
+  }
+
   public ItemType getType(){
     return type;
+  }
+
+  public void setId(){
+    this.id = id;
   }
 
   public int getId(){
@@ -30,14 +44,16 @@ public class Product implements Item{
   }
 
   public void setName(String name){
-
+    this.name = name;
   }
 
   public String getName(){
     return name;
   }
 
-  public void setManufacturer(String manufacturer){}
+  public void setManufacturer(String manufacturer){
+    this.manufacturer = manufacturer;
+  }
 
   public String getManufacturer(){
     return manufacturer;

@@ -58,7 +58,7 @@ Course: COP 3003
               <Button fx:id="btnAddProduct" layoutX="143.0" layoutY="275.0" mnemonicParsing="false" onAction="#addProduct" text="Add Product" />
               <TableView fx:id="tblViewProducts" layoutX="364.0" layoutY="45.0" prefHeight="288.0" prefWidth="323.0">
                 <columns>
-                  <TableColumn fx:id="colProductID" prefWidth="75.0" text="Product ID"/>
+                  <TableColumn fx:id="colProductID" prefWidth="75.0" text="Product ID" />
                   <TableColumn fx:id="colName" prefWidth="75.0" text="Product Name" />
                   <TableColumn fx:id="colManufacturer" prefWidth="75.0" text="Manufacturer" />
                   <TableColumn fx:id="colType" prefWidth="75.0" text="Item Type" />
@@ -75,7 +75,7 @@ Course: COP 3003
           <AnchorPane>
             <children>
               <Label layoutX="14.0" layoutY="14.0" text="Choose Product" />
-              <ListView layoutX="14.0" layoutY="34.0" prefHeight="312.0" prefWidth="382.0" />
+              <ListView fx:id="productListView" layoutX="14.0" layoutY="34.0" prefHeight="312.0" prefWidth="382.0" />
               <Label layoutX="470.0" layoutY="24.0" text="Choose Quantity" />
               <ComboBox fx:id="cmbQuantity" layoutX="470.0" layoutY="47.0" prefWidth="150.0" />
               <Button fx:id="btnRecordProduction" layoutX="468.0" layoutY="144.0" mnemonicParsing="false" onAction="#recordProduction" text="Record Production" />
