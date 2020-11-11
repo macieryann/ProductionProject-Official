@@ -195,6 +195,8 @@ public class Controller {
       }
 
       productLine.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), itemTypeFromDB));
+
+      tblViewProducts.setItems(productLine);
     }
 
   }
