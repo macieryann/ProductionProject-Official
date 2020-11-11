@@ -32,7 +32,8 @@ public class Controller {
   @FXML
   private Label lblOutput;
 
-  public TabPane tabPane;
+  @FXML
+  private TabPane tabPane;
 
   @FXML
   private Pane pane;
@@ -47,13 +48,13 @@ public class Controller {
   private Tab productLineTab;
 
   @FXML
-  private static TextField txtProductName;
+  private TextField txtProductName;
 
   @FXML
-  private static TextField txtManufacturer;
+  private TextField txtManufacturer;
 
   @FXML
-  private static ChoiceBox<ItemType> chbItemType;
+  private ChoiceBox<ItemType> chbItemType;
 
   @FXML
   private Button btnAddProduct;
@@ -105,7 +106,9 @@ public class Controller {
 
     testMultimedia();
     cmbQuantity.setEditable(true);
-    for(int i = 1; i <= 10; i++)
+    for(int i = 1; i <= 10; i++){
+      cmbQuantity.getItems().add(String.valueOf(i));
+    }
     cmbQuantity.getSelectionModel().selectFirst();
 
     for(ItemType itemType : ItemType.values()){
@@ -113,8 +116,6 @@ public class Controller {
     }
 
     chbItemType.getSelectionModel().selectFirst();
-
-    testMultimedia();
 
     populateProductLineFromDB();
 
@@ -128,7 +129,7 @@ public class Controller {
   static Connection conn = null;
   static Statement stmt = null;
 
-  public static void connectToDb(){
+  public void connectToDb(){
     final String JDBC_DRIVER = "org.h2.Driver";
     final String DB_URL = "jdbc:h2:./res/HR";
 
@@ -144,8 +145,9 @@ public class Controller {
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
       // STEP 4: Clean-up environment
-      stmt.close();
-      conn.close();
+      // temporarily commenting out so program will run
+      //stmt.close();
+      //conn.close();
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
 
@@ -154,19 +156,22 @@ public class Controller {
     }
   }
 
-  public static void addProductToDB() throws SQLException {
+  public void addProductToDB() throws SQLException {
     //STEP 3: Execute a query
     stmt = conn.createStatement();
     String productNameData = txtProductName.getText();
     String manufacturerNameData = txtManufacturer.getText();
     ItemType productType = chbItemType.getValue();
+    String itc = productType.code;
     String insertSql = "INSERT INTO PRODUCT (NAME, TYPE, MANUFACTURER)" + "VALUES ('"
-        + productNameData + "','" + productType + "','" + manufacturerNameData + "')";
+        + productNameData + "','" + itc + "','" + manufacturerNameData + "')";
+
+
     stmt.executeUpdate(insertSql);
     System.out.println(insertSql);
   }
 
-  public static void addProductsToList() throws SQLException {
+  public void addProductsToList() throws SQLException {
     String sql = "SELECT * FROM PRODUCT";
 
     ResultSet rs = stmt.executeQuery(sql);
@@ -194,7 +199,7 @@ public class Controller {
 
   }
 
-  public static void populateProductLineFromDB(){
+  public void populateProductLineFromDB(){
 
     // from when I automatically filled the tableView
 /*    return FXCollections.observableArrayList(
@@ -223,7 +228,7 @@ public class Controller {
     // add product to observable list
   }
 
-  public static void testMultimedia() {
+  public void testMultimedia() {
     AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A", "Onkyo",
         "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
     Screen newScreen = new Screen("720x480", 40, 22);
