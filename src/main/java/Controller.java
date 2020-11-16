@@ -3,6 +3,7 @@
 //Course: COP 3003
 //  File: Controller.java
 //------------------------------------------
+
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,12 +21,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.scene.layout.Pane;
+
 
 public class Controller {
 
@@ -87,31 +89,38 @@ public class Controller {
   private Button btnRecordProduction;
 
   @FXML
-  private TextArea txtAreaProdLog;
-
-  @FXML
   private Tab productionLogTab;
 
-/*  // Update table on Product Line Tab
-  public void setUpProductLineTab(){
-    colName.setCellValueFactory(new PropertyValueFactory("name"));
-    colName.setCellValueFactory(new PropertyValueFactory("manufacturer"));
-    colName.setCellValueFactory(new PropertyValueFactory("type"));
-    tblViewProducts.setItems(productLine);
-  }*/
+  @FXML
+  private TextArea txtAreaProdLog;
 
-  static ObservableList<Product> productLine;
+  ObservableList<Product> productLine;
 
-  public void initialize(){
+  Connection conn = null;
+  Statement stmt = null;
 
-    testMultimedia();
+  public void initialize() {
+    connectToDb();
+    productLine = FXCollections.observableArrayList();
+
     cmbQuantity.setEditable(true);
-    for(int i = 1; i <= 10; i++){
+    for (int i = 1; i <= 10; i++) {
       cmbQuantity.getItems().add(String.valueOf(i));
     }
     cmbQuantity.getSelectionModel().selectFirst();
 
-    for(ItemType itemType : ItemType.values()){
+    setupProductLineTable();
+
+    try {
+      addProductsToList();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+
+    // method example from course website
+    //testMultimedia();
+
+    for (ItemType itemType : ItemType.values()) {
       chbItemType.getItems().add(itemType);
     }
 
@@ -119,17 +128,10 @@ public class Controller {
 
     populateProductLineFromDB();
 
-    colProductID.setCellValueFactory(new PropertyValueFactory("id"));
-    colName.setCellValueFactory(new PropertyValueFactory("Name"));
-    colManufacturer.setCellValueFactory(new PropertyValueFactory("Manufacturer"));
-    colType.setCellValueFactory(new PropertyValueFactory("Type"));
     tblViewProducts.setItems(productLine);
   }
 
-  static Connection conn = null;
-  static Statement stmt = null;
-
-  public void connectToDb(){
+  public void connectToDb() {
     final String JDBC_DRIVER = "org.h2.Driver";
     final String DB_URL = "jdbc:h2:./res/HR";
 
@@ -141,8 +143,14 @@ public class Controller {
       // STEP 1: Register JDBC driver
       Class.forName(JDBC_DRIVER);
 
-      //STEP 2: Open a connection
+      // STEP 2: Open a connection
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+      // STEP 3 = addProductToDB()
+      stmt = conn.createStatement();
+
+      //addProductToDB();
+      //addProductsToList();
 
       // STEP 4: Clean-up environment
       // temporarily commenting out so program will run
@@ -156,9 +164,18 @@ public class Controller {
     }
   }
 
+  public void setupProductLineTable() {
+    colProductID.setCellValueFactory(new PropertyValueFactory("id"));
+    colName.setCellValueFactory(new PropertyValueFactory("name"));
+    colManufacturer.setCellValueFactory(new PropertyValueFactory("manufacturer"));
+    colType.setCellValueFactory(new PropertyValueFactory("type"));
+
+    tblViewProducts.setItems(productLine);
+  }
+
   public void addProductToDB() throws SQLException {
     //STEP 3: Execute a query
-    stmt = conn.createStatement();
+
     String productNameData = txtProductName.getText();
     String manufacturerNameData = txtManufacturer.getText();
     ItemType productType = chbItemType.getValue();
@@ -166,9 +183,9 @@ public class Controller {
     String insertSql = "INSERT INTO PRODUCT (NAME, TYPE, MANUFACTURER)" + "VALUES ('"
         + productNameData + "','" + itc + "','" + manufacturerNameData + "')";
 
-
     stmt.executeUpdate(insertSql);
     System.out.println(insertSql);
+
   }
 
   public void addProductsToList() throws SQLException {
@@ -176,6 +193,9 @@ public class Controller {
 
     ResultSet rs = stmt.executeQuery(sql);
     while (rs.next()) {
+      // testing ResultSet
+      System.out.println(colName);
+
       System.out.println("Product ID: " + rs.getString(1));
       System.out.println("Product Name: " + rs.getString(2));
       System.out.println("Product Type: " + rs.getString(3));
@@ -184,24 +204,21 @@ public class Controller {
       String itemTypeString = rs.getString(4);
       ItemType itemTypeFromDB = ItemType.AUDIO;
 
-      if(itemTypeString.equals("AU")){
+      if (itemTypeString.equals("AU")) {
         itemTypeFromDB = ItemType.AUDIO;
-      }else if(itemTypeString.equals("VI")){
+      } else if (itemTypeString.equals("VI")) {
         itemTypeFromDB = ItemType.VISUAL;
-      }else if(itemTypeString.equals("AM")){
+      } else if (itemTypeString.equals("AM")) {
         itemTypeFromDB = ItemType.AUDIO_MOBILE;
-      }else if(itemTypeString.equals("VM")){
+      } else if (itemTypeString.equals("VM")) {
         itemTypeFromDB = ItemType.VISUAL_MOBILE;
       }
 
       productLine.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), itemTypeFromDB));
-
-      tblViewProducts.setItems(productLine);
     }
-
   }
 
-  public void populateProductLineFromDB(){
+  public void populateProductLineFromDB() {
 
     // from when I automatically filled the tableView
 /*    return FXCollections.observableArrayList(
@@ -211,21 +228,26 @@ public class Controller {
         new Widget("Podcast","Spotify",ItemType.AUDIO_MOBILE));*/
 
     connectToDb();
-
   }
 
   public void recordProduction(javafx.event.ActionEvent actionEvent) {
-    // add text from ProductionRecord to product log text area
-/*    Product Product = new Product(txtProductName.getText(), txtManufacturer.getText(), ItemType.AUDIO){};
-    ProductionRecord pr = new ProductionRecord(Product, Product.getId());
-    txtAreaProdLog.appendText(String.valueOf(pr));*/
-    System.out.println("Hello");
+    /*String textAreaString = "";
+    ObservableList listOfItems = productListView.getSelectionModel().getSelectedItems();
+
+    for(Object item : listOfItems){
+      textAreaString += String.format("%s%n", (String)item);
+    }
+    txtAreaProdLog.setText(textAreaString);*/
   }
 
   public void addProduct(javafx.event.ActionEvent actionEvent) throws SQLException {
     connectToDb();
 
     addProductToDB();
+
+    productLine.clear();
+
+    addProductsToList();
 
     // add product to observable list
   }
