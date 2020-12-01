@@ -4,10 +4,12 @@
 //  File: Controller.java
 //------------------------------------------
 
+import static java.lang.Integer.parseInt;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -94,14 +96,15 @@ public class Controller {
   @FXML
   private TextArea txtAreaProdLog;
 
-  ObservableList<Product> productLine;
+  ObservableList<Product> productLine = FXCollections.observableArrayList();
 
   Connection conn = null;
   Statement stmt = null;
 
-  public void initialize() {
+  public void initialize() throws SQLException {
     connectToDb();
-    productLine = FXCollections.observableArrayList();
+
+    addProductsToList();
 
     cmbQuantity.setEditable(true);
     for (int i = 1; i <= 10; i++) {
@@ -111,14 +114,13 @@ public class Controller {
 
     setupProductLineTable();
 
+    addProductionRecordToList();
+
     try {
       addProductsToList();
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }
-
-    // method example from course website
-    //testMultimedia();
 
     for (ItemType itemType : ItemType.values()) {
       chbItemType.getItems().add(itemType);
@@ -149,9 +151,6 @@ public class Controller {
       // STEP 3 = addProductToDB()
       stmt = conn.createStatement();
 
-      //addProductToDB();
-      //addProductsToList();
-
       // STEP 4: Clean-up environment
       // temporarily commenting out so program will run
       //stmt.close();
@@ -175,7 +174,6 @@ public class Controller {
 
   public void addProductToDB() throws SQLException {
     //STEP 3: Execute a query
-
     String productNameData = txtProductName.getText();
     String manufacturerNameData = txtManufacturer.getText();
     ItemType productType = chbItemType.getValue();
@@ -193,9 +191,6 @@ public class Controller {
 
     ResultSet rs = stmt.executeQuery(sql);
     while (rs.next()) {
-      // testing ResultSet
-      System.out.println(colName);
-
       System.out.println("Product ID: " + rs.getString(1));
       System.out.println("Product Name: " + rs.getString(2));
       System.out.println("Product Type: " + rs.getString(3));
@@ -205,7 +200,6 @@ public class Controller {
       ItemType itemTypeFromDB = ItemType.AUDIO;
 
       if (itemTypeString.equals("AU")) {
-        itemTypeFromDB = ItemType.AUDIO;
       } else if (itemTypeString.equals("VI")) {
         itemTypeFromDB = ItemType.VISUAL;
       } else if (itemTypeString.equals("AM")) {
@@ -215,11 +209,21 @@ public class Controller {
       }
 
       productLine.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), itemTypeFromDB));
+
+      productListView.setItems(productLine);
     }
   }
 
-  public void populateProductLineFromDB() {
+  // method for populating list view.
+  public void populateListView(){
+    productListView.setItems(productLine);
+  }
 
+  public void loadProductList() throws SQLException {
+
+  }
+
+  public void populateProductLineFromDB() {
     // from when I automatically filled the tableView
 /*    return FXCollections.observableArrayList(
         new Widget("iPhone","Apple",ItemType.VISUAL),
@@ -230,14 +234,47 @@ public class Controller {
     connectToDb();
   }
 
-  public void recordProduction(javafx.event.ActionEvent actionEvent) {
-    /*String textAreaString = "";
-    ObservableList listOfItems = productListView.getSelectionModel().getSelectedItems();
+  ObservableList<ProductionRecord> listOfItems = FXCollections.observableArrayList();
 
-    for(Object item : listOfItems){
-      textAreaString += String.format("%s%n", (String)item);
+  public void recordProductionBtn(javafx.event.ActionEvent actionEvent) {
+      recordProduction();
+  }
+
+  public void recordProduction(){
+    int quantity = parseInt(cmbQuantity.getValue());
+
+    // instantiate a new product
+    Product product = productListView.getSelectionModel().getSelectedItem();
+
+    try{
+      for(int i = 0; i <= quantity; i++) {
+        ProductionRecord productionRecord = new ProductionRecord(product, quantity);
+        Timestamp dateToTimeStamp = new Timestamp(productionRecord.getProdDate().getTime());
+        String insertSql =
+          "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED)" + "VALUES ('"
+            + String.valueOf(product.getId()) + "','" + productionRecord.getSerialNum()
+            + "','" + String.valueOf(dateToTimeStamp) + "')";
+        stmt.executeUpdate(insertSql);
+      }}catch (IllegalStateException e){
+
+      }catch (SQLException e){
+        e.printStackTrace();
+      }
+
+    txtAreaProdLog.setText(String.valueOf(listOfItems));
+  }
+
+  public void addProductionRecordToList() throws SQLException {
+    String sql = "SELECT * FROM PRODUCTIONRECORD";
+
+    ResultSet rs = stmt.executeQuery(sql);
+    while (rs.next()) {
+      // setting new observable list listOfItems equal to the table
+      listOfItems.add(new ProductionRecord(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4)));
+
     }
-    txtAreaProdLog.setText(textAreaString);*/
+    txtAreaProdLog.setText(String.valueOf(listOfItems));
+
   }
 
   public void addProduct(javafx.event.ActionEvent actionEvent) throws SQLException {
@@ -249,7 +286,9 @@ public class Controller {
 
     addProductsToList();
 
-    // add product to observable list
+    populateListView();
+
+    loadProductList();
   }
 
   public void testMultimedia() {

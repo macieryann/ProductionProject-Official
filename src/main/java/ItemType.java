@@ -1,8 +1,10 @@
-//------------------------------------------
-//  Name: Macie Ryan
-//Course: COP 3003
-//  File: ItemType.java
-//------------------------------------------
+/*
+ * NAME: Macie Ryan
+ * CLASS: COP 3003
+ * FILE: ItemType.java
+ *
+ * Defines the ItemType enum.
+ */
 public enum ItemType {
   AUDIO ("AU"),
   VISUAL ("VI"),

@@ -1,8 +1,10 @@
-//------------------------------------------
-//  Name: Macie Ryan
-//Course: COP 3003
-//  File: Item.java
-//------------------------------------------
+/*
+ * NAME: Macie Ryan
+ * CLASS: COP 3003
+ * FILE: Item.java
+ *
+ * Defines the Item interface.
+ */
 public interface Item {
   public int getId();
 
