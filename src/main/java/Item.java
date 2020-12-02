@@ -6,11 +6,12 @@
  * Defines the Item interface.
  */
 public interface Item {
-  public int getId();
 
-  public void setName(String name);
-  public String getName();
+  int getId();
 
-  public void setManufacturer(String manufacturer);
-  public String getManufacturer();
+  void setName(String name);
+
+  String getName();
+
+  String getManufacturer();
 }

@@ -6,105 +6,114 @@
 
 import static java.lang.Integer.parseInt;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javafx.scene.layout.Pane;
+import java.sql.Timestamp;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-
+/**
+ * Deals with user interaction on the production line GUI.
+ *
+ * @author Macie Ryan
+ */
 public class Controller {
 
-  @FXML
-  private Label lblOutput;
-
-  @FXML
-  private TabPane tabPane;
-
-  @FXML
-  private Pane pane;
-
-  @FXML
-  private Tab tab;
-
-  @FXML
-  private Label Produce;
-
-  @FXML
-  private Tab productLineTab;
-
+  /**
+   * The new product name text field.
+   */
   @FXML
   private TextField txtProductName;
 
+  /**
+   * The new product manufacturer field.
+   */
   @FXML
   private TextField txtManufacturer;
 
+  /**
+   * The new product item type choice box field.
+   */
   @FXML
   private ChoiceBox<ItemType> chbItemType;
 
-  @FXML
-  private Button btnAddProduct;
-
+  /**
+   * The products table.
+   */
   @FXML
   private TableView<Product> tblViewProducts;
 
+  /**
+   * The product id column on the products table.
+   */
   @FXML
   private TableColumn colProductID;
 
+  /**
+   * The product name column on the products table.
+   */
   @FXML
   private TableColumn colName;
 
+  /**
+   * The product manufacturer column on the products table.
+   */
   @FXML
   private TableColumn colManufacturer;
 
+  /**
+   * The product type column on the products table.
+   */
   @FXML
   private TableColumn colType;
 
-  @FXML
-  private Tab produceTab;
-
+  /**
+   * The product list view.
+   */
   @FXML
   private ListView<Product> productListView;
 
+  /**
+   * The combobox for users to choose quantity.
+   */
   @FXML
   private ComboBox<String> cmbQuantity;
 
-  @FXML
-  private Button btnRecordProduction;
-
-  @FXML
-  private Tab productionLogTab;
-
+  /**
+   * The text area for production log.
+   */
   @FXML
   private TextArea txtAreaProdLog;
 
+  /**
+   * The list of products loaded from the database.
+   */
   ObservableList<Product> productLine = FXCollections.observableArrayList();
 
   Connection conn = null;
   Statement stmt = null;
 
+  /**
+   * Initializes the production line GUI with additional data.
+   */
   public void initialize() throws SQLException {
     connectToDb();
 
     addProductsToList();
+
+    productLine.clear();
 
     cmbQuantity.setEditable(true);
     for (int i = 1; i <= 10; i++) {
@@ -128,11 +137,26 @@ public class Controller {
 
     chbItemType.getSelectionModel().selectFirst();
 
-    populateProductLineFromDB();
-
     tblViewProducts.setItems(productLine);
   }
 
+  /**
+   * Alternative 'initialize method that is not used.
+   */
+  public void addProduct() throws SQLException {
+    connectToDb();
+
+    addProductToDB();
+
+    productLine.clear();
+
+    addProductsToList();
+
+  }
+
+  /**
+   * Initializes the database information and creates a connection.
+   */
   public void connectToDb() {
     final String JDBC_DRIVER = "org.h2.Driver";
     final String DB_URL = "jdbc:h2:./res/HR";
@@ -151,33 +175,21 @@ public class Controller {
       // STEP 3 = addProductToDB()
       stmt = conn.createStatement();
 
-      // STEP 4: Clean-up environment
-      // temporarily commenting out so program will run
-      //stmt.close();
-      //conn.close();
-    } catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
 
-    } catch (SQLException e) {
-      e.printStackTrace();
     }
   }
 
-  public void setupProductLineTable() {
-    colProductID.setCellValueFactory(new PropertyValueFactory("id"));
-    colName.setCellValueFactory(new PropertyValueFactory("name"));
-    colManufacturer.setCellValueFactory(new PropertyValueFactory("manufacturer"));
-    colType.setCellValueFactory(new PropertyValueFactory("type"));
-
-    tblViewProducts.setItems(productLine);
-  }
-
+  /**
+   * Adds product to database (PRODUCT table).
+   */
   public void addProductToDB() throws SQLException {
     //STEP 3: Execute a query
     String productNameData = txtProductName.getText();
-    String manufacturerNameData = txtManufacturer.getText();
     ItemType productType = chbItemType.getValue();
     String itc = productType.code;
+    String manufacturerNameData = txtManufacturer.getText();
     String insertSql = "INSERT INTO PRODUCT (NAME, TYPE, MANUFACTURER)" + "VALUES ('"
         + productNameData + "','" + itc + "','" + manufacturerNameData + "')";
 
@@ -186,6 +198,9 @@ public class Controller {
 
   }
 
+  /**
+   * Adds products from database to list view.
+   */
   public void addProductsToList() throws SQLException {
     String sql = "SELECT * FROM PRODUCT";
 
@@ -196,120 +211,90 @@ public class Controller {
       System.out.println("Product Type: " + rs.getString(3));
       System.out.println("Product Manufacturer: " + rs.getString(4));
 
-      String itemTypeString = rs.getString(4);
+      String itemTypeString = rs.getString(3);
       ItemType itemTypeFromDB = ItemType.AUDIO;
 
-      if (itemTypeString.equals("AU")) {
-      } else if (itemTypeString.equals("VI")) {
-        itemTypeFromDB = ItemType.VISUAL;
-      } else if (itemTypeString.equals("AM")) {
-        itemTypeFromDB = ItemType.AUDIO_MOBILE;
-      } else if (itemTypeString.equals("VM")) {
-        itemTypeFromDB = ItemType.VISUAL_MOBILE;
+      switch (itemTypeString) {
+        case "AU":
+          break;
+        case "VI":
+          itemTypeFromDB = ItemType.VISUAL;
+          break;
+        case "AM":
+          itemTypeFromDB = ItemType.AUDIO_MOBILE;
+          break;
+        case "VM":
+          itemTypeFromDB = ItemType.VISUAL_MOBILE;
+          break;
       }
 
-      productLine.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), itemTypeFromDB));
+      productLine.add(new Product(rs.getInt(1), rs.getString(2),
+          itemTypeFromDB, rs.getString(4)));
 
       productListView.setItems(productLine);
     }
   }
 
-  // method for populating list view.
-  public void populateListView(){
-    productListView.setItems(productLine);
+  /**
+   * Initializes table view on product line tab.
+   */
+  public void setupProductLineTable() {
+    colProductID.setCellValueFactory(new PropertyValueFactory("id"));
+    colName.setCellValueFactory(new PropertyValueFactory("name"));
+    colManufacturer.setCellValueFactory(new PropertyValueFactory("manufacturer"));
+    colType.setCellValueFactory(new PropertyValueFactory("type"));
+
+    tblViewProducts.setItems(productLine);
   }
 
-  public void loadProductList() throws SQLException {
-
-  }
-
-  public void populateProductLineFromDB() {
-    // from when I automatically filled the tableView
-/*    return FXCollections.observableArrayList(
-        new Widget("iPhone","Apple",ItemType.VISUAL),
-        new Widget("Airpods","Apple",ItemType.AUDIO),
-        new Widget("Switch","Nintendo",ItemType.VISUAL_MOBILE),
-        new Widget("Podcast","Spotify",ItemType.AUDIO_MOBILE));*/
-
-    connectToDb();
-  }
-
+  /**
+   * The list of production logs loaded from the database.
+   */
   ObservableList<ProductionRecord> listOfItems = FXCollections.observableArrayList();
 
-  public void recordProductionBtn(javafx.event.ActionEvent actionEvent) {
-      recordProduction();
-  }
-
-  public void recordProduction(){
+  /**
+   * Record production button Creates a new Product and inserts it into the database in the
+   * PRODUCTIONRECORD table
+   */
+  public void recordProductionBtn(javafx.event.ActionEvent actionEvent) throws SQLException {
     int quantity = parseInt(cmbQuantity.getValue());
 
-    // instantiate a new product
     Product product = productListView.getSelectionModel().getSelectedItem();
 
-    try{
-      for(int i = 0; i <= quantity; i++) {
-        ProductionRecord productionRecord = new ProductionRecord(product, quantity);
-        Timestamp dateToTimeStamp = new Timestamp(productionRecord.getProdDate().getTime());
+    ProductionRecord productionRecord = new ProductionRecord(product, quantity);
+
+    Timestamp dateToTimeStamp = new Timestamp(productionRecord.getProdDate().getTime());
+
+    try {
+      for (int i = 1; i <= quantity; i++) {
         String insertSql =
-          "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED)" + "VALUES ('"
-            + String.valueOf(product.getId()) + "','" + productionRecord.getSerialNum()
-            + "','" + String.valueOf(dateToTimeStamp) + "')";
+            "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED)" + "VALUES ('"
+                + product.getId() + "','" + productionRecord.getSerialNum()
+                + "','" + dateToTimeStamp + "')";
         stmt.executeUpdate(insertSql);
-      }}catch (IllegalStateException e){
-
-      }catch (SQLException e){
-        e.printStackTrace();
       }
+    } catch (IllegalStateException | SQLException e) {
+      e.printStackTrace();
+    }
 
-    txtAreaProdLog.setText(String.valueOf(listOfItems));
+    addProductionRecordToList();
   }
 
+  /**
+   * Adds products from database to text area.
+   */
   public void addProductionRecordToList() throws SQLException {
     String sql = "SELECT * FROM PRODUCTIONRECORD";
 
     ResultSet rs = stmt.executeQuery(sql);
     while (rs.next()) {
       // setting new observable list listOfItems equal to the table
-      listOfItems.add(new ProductionRecord(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4)));
+      listOfItems.add(new ProductionRecord(rs.getInt(1), rs.getInt(2),
+          rs.getString(3), rs.getDate(4)));
 
     }
     txtAreaProdLog.setText(String.valueOf(listOfItems));
 
   }
 
-  public void addProduct(javafx.event.ActionEvent actionEvent) throws SQLException {
-    connectToDb();
-
-    addProductToDB();
-
-    productLine.clear();
-
-    addProductsToList();
-
-    populateListView();
-
-    loadProductList();
-  }
-
-  public void testMultimedia() {
-    AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A", "Onkyo",
-        "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
-    Screen newScreen = new Screen("720x480", 40, 22);
-    MoviePlayer newMovieProduct = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen,
-        MonitorType.LCD);
-    ArrayList<MultimediaControl> productList = new ArrayList<MultimediaControl>();
-
-    productList.add(newAudioProduct);
-
-    productList.add(newMovieProduct);
-
-    for (MultimediaControl i : productList) {
-      System.out.println(i);
-
-      i.play();
-      i.stop();
-      i.next();
-      i.previous();
-    }
-  }
 }

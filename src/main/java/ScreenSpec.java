@@ -5,9 +5,6 @@
  *
  * Defines the ScreenSpec interface.
  */
-public interface ScreenSpec{
-  public String getResolution();
-  public int getRefreshRate();
-  public int getResponseTime();
+public interface ScreenSpec {
 
 }
