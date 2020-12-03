@@ -15,9 +15,12 @@ import java.sql.Timestamp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -30,6 +33,37 @@ import javafx.scene.control.cell.PropertyValueFactory;
  * @author Macie Ryan
  */
 public class Controller {
+
+  /**
+   * The GUI tab pane.
+   */
+  public TabPane tabPane;
+
+  /**
+   * The product line / information input tab.
+   */
+  public Tab productLineTab;
+
+  /**
+   * The product and record production tab.
+   */
+  public Tab produceTab;
+
+  /**
+   * The product production recollections tab.
+   */
+  public Tab productionLogTab;
+
+  /**
+   * The add product button.
+   */
+  public Button btnAddProduct;
+
+  /**
+   * The add production button.
+   */
+  public Button btnRecordProduction;
+
 
   /**
    * The new product name text field.
@@ -59,25 +93,25 @@ public class Controller {
    * The product id column on the products table.
    */
   @FXML
-  private TableColumn colProductId;
+  private TableColumn<?, ?> colProductId;
 
   /**
    * The product name column on the products table.
    */
   @FXML
-  private TableColumn colName;
+  private TableColumn<?, ?> colName;
 
   /**
    * The product manufacturer column on the products table.
    */
   @FXML
-  private TableColumn colManufacturer;
+  private TableColumn<?, ?> colManufacturer;
 
   /**
    * The product type column on the products table.
    */
   @FXML
-  private TableColumn colType;
+  private TableColumn<?, ?> colType;
 
   /**
    * The product list view.
@@ -241,12 +275,14 @@ public class Controller {
    * Initializes table view on product line tab.
    */
   public void setupProductLineTable() {
-    colProductId.setCellValueFactory(new PropertyValueFactory("id"));
-    colName.setCellValueFactory(new PropertyValueFactory("name"));
-    colManufacturer.setCellValueFactory(new PropertyValueFactory("manufacturer"));
-    colType.setCellValueFactory(new PropertyValueFactory("type"));
-
     tblViewProducts.setItems(productLine);
+
+    colProductId.setCellValueFactory(new PropertyValueFactory<>("id"));
+    colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+    colManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+    colType.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+
   }
 
   /**
