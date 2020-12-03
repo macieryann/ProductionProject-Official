@@ -59,7 +59,7 @@ public class Controller {
    * The product id column on the products table.
    */
   @FXML
-  private TableColumn colProductID;
+  private TableColumn colProductId;
 
   /**
    * The product name column on the products table.
@@ -212,24 +212,26 @@ public class Controller {
       System.out.println("Product Manufacturer: " + rs.getString(4));
 
       String itemTypeString = rs.getString(3);
-      ItemType itemTypeFromDB = ItemType.AUDIO;
+      ItemType itemTypeFromDb = ItemType.AUDIO;
 
       switch (itemTypeString) {
         case "AU":
           break;
         case "VI":
-          itemTypeFromDB = ItemType.VISUAL;
+          itemTypeFromDb = ItemType.VISUAL;
           break;
         case "AM":
-          itemTypeFromDB = ItemType.AUDIO_MOBILE;
+          itemTypeFromDb = ItemType.AUDIO_MOBILE;
           break;
         case "VM":
-          itemTypeFromDB = ItemType.VISUAL_MOBILE;
+          itemTypeFromDb = ItemType.VISUAL_MOBILE;
           break;
+        default:
+          itemTypeFromDb = ItemType.AUDIO;
       }
 
       productLine.add(new Product(rs.getInt(1), rs.getString(2),
-          itemTypeFromDB, rs.getString(4)));
+          itemTypeFromDb, rs.getString(4)));
 
       productListView.setItems(productLine);
     }
@@ -239,7 +241,7 @@ public class Controller {
    * Initializes table view on product line tab.
    */
   public void setupProductLineTable() {
-    colProductID.setCellValueFactory(new PropertyValueFactory("id"));
+    colProductId.setCellValueFactory(new PropertyValueFactory("id"));
     colName.setCellValueFactory(new PropertyValueFactory("name"));
     colManufacturer.setCellValueFactory(new PropertyValueFactory("manufacturer"));
     colType.setCellValueFactory(new PropertyValueFactory("type"));
@@ -254,7 +256,7 @@ public class Controller {
 
   /**
    * Record production button Creates a new Product and inserts it into the database in the
-   * PRODUCTIONRECORD table
+   * PRODUCTIONRECORD table.
    */
   public void recordProductionBtn(javafx.event.ActionEvent actionEvent) throws SQLException {
     int quantity = parseInt(cmbQuantity.getValue());

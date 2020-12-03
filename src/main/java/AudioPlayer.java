@@ -14,12 +14,12 @@
 public class AudioPlayer extends Product implements MultimediaControl {
 
   /**
-   * The audio formats supported by this audio player
+   * The audio formats supported by this audio player.
    */
   String supportedAudioFormats;
 
   /**
-   * The playlist formats supported by this audio player
+   * The playlist formats supported by this audio player.
    */
   String supportedPlaylistFormats;
 
@@ -39,17 +39,17 @@ public class AudioPlayer extends Product implements MultimediaControl {
   }
 
   /**
-   * Displays a string for this audio player
+   * Displays a string for this audio player.
    *
-   * @return product name, manufacturer, item type, audio format, and playlist format each on their
-   * own lines
+   * @return product name, manufacturer, item type,
+   *     audio format, and playlist format each on their own lines.
    */
   public String toString() {
-    return "Name: " + name +
-        "\nManufacturer: " + manufacturer +
-        "\nType: " + type +
-        "\nSupported Audio Formats: " + supportedAudioFormats +
-        "\nSupported Playlist Formats: " + supportedPlaylistFormats;
+    return "Name: " + name
+        + "\nManufacturer: " + manufacturer
+        + "\nType: " + type
+        + "\nSupported Audio Formats: " + supportedAudioFormats
+        + "\nSupported Playlist Formats: " + supportedPlaylistFormats;
   }
 
 }

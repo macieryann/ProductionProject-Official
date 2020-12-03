@@ -23,7 +23,7 @@ public class ProductionRecord {
   /**
    * ID Number of product produced.
    */
-  int productID;
+  int productId;
 
   /**
    * Serial number of product produced.
@@ -39,14 +39,14 @@ public class ProductionRecord {
    * Creates a representation of an existing production record.
    *
    * @param productionNumber - the unique production number
-   * @param productID        - the produced product id
+   * @param productId        - the produced product id
    * @param serialNumber     - the serial number of product produced
    * @param dateProduced     - the date of production
    */
-  public ProductionRecord(int productionNumber, int productID, String serialNumber,
+  public ProductionRecord(int productionNumber, int productId, String serialNumber,
       Date dateProduced) {
     this.productionNumber = productionNumber;
-    this.productID = productID;
+    this.productId = productId;
     this.serialNumber = serialNumber;
     this.dateProduced = dateProduced;
   }
@@ -64,7 +64,7 @@ public class ProductionRecord {
 
   /**
    * Creates a unique serial number for product being produced with the first three letters of the
-   * manufacturer name, the two letter item code, then five unique digits
+   * manufacturer name, the two letter item code, then five unique digits.
    *
    * @param manufacturer  - the manufacturer who produced the product
    * @param product       - the product being produced
@@ -80,7 +80,7 @@ public class ProductionRecord {
   }
 
   /**
-   * Gets the recorded production number
+   * Gets the recorded production number.
    *
    * @return the production number
    */
@@ -89,16 +89,16 @@ public class ProductionRecord {
   }
 
   /**
-   * Gets the produced product id
+   * Gets the produced product id.
    *
    * @return the product id
    */
-  public int getProductID() {
-    return productID;
+  public int getProductId() {
+    return productId;
   }
 
   /**
-   * Gets the recorded product's serial number
+   * Gets the recorded product's serial number.
    *
    * @return the product serial number
    */
@@ -107,7 +107,7 @@ public class ProductionRecord {
   }
 
   /**
-   * Sets the recorded date of production
+   * Sets the recorded date of production.
    *
    * @param dateProduced - the production date
    */
@@ -116,7 +116,7 @@ public class ProductionRecord {
   }
 
   /**
-   * Gets the recorded date of production
+   * Gets the recorded date of production.
    *
    * @return the production date
    */
@@ -125,13 +125,13 @@ public class ProductionRecord {
   }
 
   /**
-   * Displays a string for this production record
+   * Displays a string for this production record.
    *
    * @return product name, product id, serial number, and date produced on one line
    */
   public String toString() {
     return "Prod. Num: " + getProductionNum()
-        + " Product ID: " + getProductID()
+        + " Product ID: " + getProductId()
         + " Serial Num: " + getSerialNum()
         + " Date: " + getProdDate() + "\n";
   }

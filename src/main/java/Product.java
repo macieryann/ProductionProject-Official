@@ -47,7 +47,7 @@ public class Product implements Item {
   }
 
   /**
-   * Creates a new product with an ID that is unique to the produced product
+   * Creates a new product with an ID that is unique to the produced product.
    *
    * @param id           - id of product produced
    * @param name         - name of product produced
@@ -62,18 +62,18 @@ public class Product implements Item {
   }
 
   /**
-   * Displays a descriptive string for this product
+   * Displays a descriptive string for this product.
    *
    * @return product name, manufacturer, and item type each on their own line
    */
   public String toString() {
-    return "Name: " + getName() +
-        "\nManufacturer: " + getManufacturer() +
-        "\nType: " + type.code;
+    return "Name: " + getName()
+         + "\nManufacturer: " + getManufacturer()
+        + "\nType: " + type.code;
   }
 
   /**
-   * Gets the recorded product's item type
+   * Gets the recorded product's item type.
    *
    * @return the product item type
    */
@@ -82,7 +82,7 @@ public class Product implements Item {
   }
 
   /**
-   * Gets the recorded product's id
+   * Gets the recorded product's id.
    *
    * @return the product id number
    */
@@ -91,7 +91,7 @@ public class Product implements Item {
   }
 
   /**
-   * Sets the recorded product's name
+   * Sets the recorded product's name.
    *
    * @param name - item type of the product produced
    */
@@ -100,7 +100,7 @@ public class Product implements Item {
   }
 
   /**
-   * Gets the recorded product's name
+   * Gets the recorded product's name.
    *
    * @return the product name
    */
@@ -109,7 +109,7 @@ public class Product implements Item {
   }
 
   /**
-   * Gets the recorded product's manufacturer
+   * Gets the recorded product's manufacturer.
    *
    * @return the product manufacturer
    */

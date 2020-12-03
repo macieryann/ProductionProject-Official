@@ -14,12 +14,12 @@
 public class MoviePlayer extends Product implements MultimediaControl {
 
   /**
-   * The screen utilized by the product
+   * The screen utilized by the product.
    */
   Screen screen;
 
   /**
-   * The monitor type utilized by this product
+   * The monitor type utilized by this product.
    */
   MonitorType monitorType;
 
@@ -38,10 +38,10 @@ public class MoviePlayer extends Product implements MultimediaControl {
   }
 
   /**
-   * Displays a string for this movie player
+   * Displays a string for this movie player.
    *
-   * @return product name, manufacturer, and item type from Product and screen and monitor type each
-   * on their own lines
+   * @return product name, manufacturer, and item type from Product
+   *     and screen and monitor type each on their own lines
    */
   public String toString() {
     return super.toString()
