@@ -5,6 +5,7 @@ The Production Project program is for a media player production facility to keep
 ![Project GIF](docs/prodProjGIF.gif)
 
 ## Documentation
+[JavaDoc's for Macie's Production Project](https://macieryann.github.io/ProductionProject-Official/ProductionRecord.html)
 
 
 ## Diagrams
