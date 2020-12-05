@@ -180,7 +180,7 @@ public class Controller {
   public void addProduct() throws SQLException {
     connectToDb();
 
-    addProductToDB();
+    addProductToDb();
 
     productLine.clear();
 
@@ -192,19 +192,19 @@ public class Controller {
    * Initializes the database information and creates a connection.
    */
   public void connectToDb() {
-    final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:./res/HR";
+    final String JdbcDriver = "org.h2.Driver";
+    final String DbUrl = "jdbc:h2:./res/HR";
 
     //  Database credentials
-    final String USER = "";
-    final String PASS = "";
+    final String User = "";
+    final String Pass = "";
 
     try {
       // STEP 1: Register JDBC driver
-      Class.forName(JDBC_DRIVER);
+      Class.forName(JdbcDriver);
 
       // STEP 2: Open a connection
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      conn = DriverManager.getConnection(DbUrl, User, Pass);
 
       // STEP 3 = addProductToDB()
       stmt = conn.createStatement();
@@ -218,7 +218,7 @@ public class Controller {
   /**
    * Adds product to database (PRODUCT table).
    */
-  public void addProductToDB() throws SQLException {
+  public void addProductToDb() throws SQLException {
     //STEP 3: Execute a query
     String productNameData = txtProductName.getText();
     ItemType productType = chbItemType.getValue();
